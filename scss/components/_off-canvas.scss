@@ -1,0 +1,123 @@
+/*
+	Off-canvas menu
+  ---------------
+
+  A generic container that stays fixed to the left, top, right, or bottom of the screen, and is summoned when needed. When an off-canvas panel is open, the app frame shifts over to reveal the menu.
+*/
+
+$offcanvas-size: 250px !default;
+$offcanvas-background: #666 !default;
+$offcanvas-shadow: (
+  length: 3px,
+  size: 10px,
+  color: rgba(0,0,0,0.25),
+) !default;
+
+// Alternate off-canvas
+.ofc {
+	$size: 250px;
+	$shadow-length: 3px;
+	$shadow-size: 10px;
+	$shadow-color: rgba(0, 0, 0, 0.25);
+
+	position: fixed;
+	overflow: scroll;
+	-webkit-overflow-scrolling: touch;
+	transition: transform 0.25s ease-out;
+	backface-visibility: hidden;
+
+  background: $offcanvas-background;
+  color: isitlight($offcanvas-background, #000, #fff);
+
+	// Active state
+	&.is-active {
+		transform: translate(0,0);
+	}
+
+	// Frame styles
+	& ~ .frame {
+		transform: translate(0,0,0);
+		transition: transform 0.25s ease-out;
+		backface-visibility: hidden;
+		background: white;
+	}
+
+	// Positioning
+	&, &-left, &-right {
+		width: $size;
+		height: 100%;
+	}
+	&-top, &-bottom {
+		height: $size;
+		width: 100%;
+	}
+	&, &-left {
+		top: 0;
+		left: 0;
+		box-shadow: inset -$shadow-length 0 $shadow-size $shadow-color;
+		transform: translateX(-100%);
+		&.is-active {
+			& ~ .frame { transform: translateX($size); }
+		}
+	}
+	&-right {
+		left: auto;
+		top: 0;
+		right: 0;
+		box-shadow: inset $shadow-length 0 $shadow-size $shadow-color;
+		transform: translateX(100%);
+		&.is-active {
+			& ~ .frame { transform: translateX(-$size); }
+		}
+	}
+	&-top {
+		top: 0;
+		left: 0;
+		transform: translateY(-100%);
+		box-shadow: inset 0 (-$shadow-length) $shadow-size $shadow-color;
+		&.is-active {
+			& ~ .frame { transform: translateY($size); }
+		}
+	}
+	&-bottom {
+		top: auto;
+		bottom: 0;
+		left: 0;
+		transform: translateY(100%);
+		box-shadow: inset 0 $shadow-length $shadow-size $shadow-color;
+		&.is-active {
+			& ~ .frame { transform: translateY(-$size); }
+		}
+	}
+
+	// Detached frame - stays stationary under the content
+	&.detached {
+		z-index: 0;
+		box-shadow: none;
+		& ~ .frame {
+			z-index: 1;
+			box-shadow: 0 0 15px rgba(0,0,0,0.5);
+		}
+
+		&, &.is-active {
+			transform: none;
+		}
+	}
+
+	// Restyle lists to be darker
+	.block-list {
+		header {
+			color: #ccc;
+		}
+		li {
+			border-color: #555;
+		}
+		a {
+			color: white;
+			&:hover {
+				color: white;
+				background: #777;
+			}
+		}
+	}
+}
